@@ -8,8 +8,8 @@ terraform {
 data "aws_region" "current" {}
 
 locals {
-	mail_from_email_address = var.mail_from_email_address != null ? var.mail_from_email_address : "reply@${var.domain_name}"
-	mail_from_inbox_bucket_name = var.mail_from_inbox_bucket_name != null ? var.mail_from_inbox_bucket_name : "ses-inbox-${replace(var.domain_name, ".", "-")}"
+  mail_from_email_address     = var.mail_from_email_address != null ? var.mail_from_email_address : "reply@${var.domain_name}"
+  mail_from_inbox_bucket_name = var.mail_from_inbox_bucket_name != null ? var.mail_from_inbox_bucket_name : "ses-inbox-${replace(var.domain_name, ".", "-")}"
 }
 
 resource "aws_ses_domain_identity" "domain_identity" {
@@ -38,7 +38,7 @@ resource "aws_route53_record" "domain_verification_record" {
 }
 
 resource "aws_ses_domain_identity_verification" "domain_verification" {
-  domain = aws_ses_domain_identity.domain_identity.id
+  domain     = aws_ses_domain_identity.domain_identity.id
   depends_on = [aws_route53_record.domain_verification_record]
 }
 
@@ -86,7 +86,7 @@ resource "aws_ses_identity_policy" "send_email" {
 }
 
 resource "aws_s3_bucket" "inbox" {
-  bucket = local.mail_from_inbox_bucket_name 
+  bucket = local.mail_from_inbox_bucket_name
   acl    = "private"
 }
 
