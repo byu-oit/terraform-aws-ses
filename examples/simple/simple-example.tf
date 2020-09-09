@@ -1,9 +1,9 @@
 provider "aws" {
-  version = "~> 2.42"
+  version = "~> 3.0"
   region  = "us-west-2"
 }
 
-module "<module_name>" {
-  source = "github.com/byu-oit/terraform-aws-<module_name>?ref=v1.0.0"
+module "ses" {
+  source = "github.com/byu-oit/terraform-aws-ses?ref=v1.0.0"
   #source = "../" # for local testing during module development
 }
