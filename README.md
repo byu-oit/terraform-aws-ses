@@ -7,13 +7,20 @@ Configures and verifies a domain in AWS SES.
 
 ## Usage
 ```hcl
+data "aws_route53_zone" "mysubdomain" {
+  name         = "mysubdomain.byu.edu."
+}
+
 module "ses" {
   source = "github.com/byu-oit/terraform-aws-ses?ref=v1.0.0"
+  domain_name = "mysubdomain.byu.edu"
+  hosted_zone_id = data.aws_route53_zone.mysubdomain
 }
 ```
 
 ## Requirements
 * Terraform version 0.12.16 or greater
+* You must already have a Route53 Hosted Zone setup for your domain, with proper NS routing setup in the parent DNS.
 
 ## Inputs
 | Name | Type  | Description | Default |
