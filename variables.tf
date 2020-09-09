@@ -6,6 +6,10 @@ variable hosted_zone_id {
   type = string
 }
 
+variable rule_set_name {
+  type = string
+}
+
 variable mail_from_email_address {
   type    = string
   default = null
