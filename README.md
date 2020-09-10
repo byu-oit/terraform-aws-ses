@@ -22,13 +22,20 @@ module "ses" {
 * Terraform version 0.12.16 or greater
 * You must already have a Route53 Hosted Zone setup for your domain, with proper NS routing setup in the parent DNS.
 
+## Email Verification
+After applying this module, you will see a verification email inside the `mail_from_inbox_bucket_name` S3 bucket. Open that email and go to the verification link. You should then be able to use SES to send emails.
+
+## Sandbox Mode
+Your SES Domain starts off in sandbox mode. In sandbox mode, you will be restricted on how many emails you can send, and you can only send to verfied recipients. To get out of sandbox mode, you need to open a support ticket with AWS. There is a specific ticket type for SES limit increases that you should use.
+
 ## Inputs
 | Name | Type  | Description | Default |
 | --- | --- | --- | --- |
 | domain_name | string | | |
 | hosted_zone_id | string | | |
-| verification_email_address | string | | verify@<domain_name> |
-| verification_bucket_name | string | | ses_verify_<domain_name> |
+| rule_set_name | string | | |
+| mail_from_email_address | string | | reply@<domain_name> |
+| mail_from_inbox_bucket_name | string | | ses-inbox-<domain_name> |
 
 ## Outputs
 | Name | Type | Description |

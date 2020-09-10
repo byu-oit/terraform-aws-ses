@@ -27,7 +27,7 @@ resource "aws_route53_record" "dkim_record" {
   zone_id = var.hosted_zone_id
   name    = "${element(aws_ses_domain_dkim.dkim.dkim_tokens, count.index)}._domainkey.${aws_ses_domain_dkim.dkim.domain}"
   type    = "CNAME"
-  ttl     = "600"
+  ttl     = "60"
   records = ["${element(aws_ses_domain_dkim.dkim.dkim_tokens, count.index)}.dkim.amazonses.com"]
 }
 
@@ -35,7 +35,7 @@ resource "aws_route53_record" "domain_verification_record" {
   zone_id = var.hosted_zone_id
   name    = "_amazonses.${aws_ses_domain_identity.domain_identity.id}"
   type    = "TXT"
-  ttl     = "600"
+  ttl     = "60"
   records = [aws_ses_domain_identity.domain_identity.verification_token]
 }
 
@@ -48,13 +48,17 @@ resource "aws_route53_record" "mx_record" {
   zone_id = var.hosted_zone_id
   name    = aws_ses_domain_identity.domain_identity.domain
   type    = "MX"
-  ttl     = "600"
-  records = ["10 feedback-smtp.${data.aws_region.current.name}.amazonses.com"]
+  ttl     = "60"
+  records = ["10 inbound-smtp.${data.aws_region.current.name}.amazonaws.com"]
 }
 
 resource "aws_ses_email_identity" "email_identity" {
   email      = local.mail_from_email_address
-  depends_on = [aws_ses_receipt_rule.store, aws_ses_domain_identity_verification.domain_verification]
+  depends_on = [
+		aws_ses_receipt_rule.store,
+		aws_ses_domain_identity_verification.domain_verification,
+		aws_route53_record.mx_record
+	]
 }
 
 data "aws_iam_policy_document" "send_email" {
