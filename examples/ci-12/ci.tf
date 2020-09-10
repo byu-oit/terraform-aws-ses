@@ -15,6 +15,10 @@ resource "aws_ses_receipt_rule_set" "default" {
   rule_set_name = "default-rule-set"
 }
 
+resource "aws_ses_active_receipt_rule_set" "main" {
+  rule_set_name = aws_ses_receipt_rule_set.default.rule_set_name
+}
+
 module "ci_test" {
   source         = "../../"
   domain_name    = module.acs.route53_zone.name

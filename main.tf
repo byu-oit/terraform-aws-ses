@@ -44,25 +44,12 @@ resource "aws_ses_domain_identity_verification" "domain_verification" {
   depends_on = [aws_route53_record.domain_verification_record]
 }
 
-resource "aws_ses_domain_mail_from" "mail_from" {
-  domain           = aws_ses_domain_identity.domain_identity.domain
-  mail_from_domain = "bounce.${aws_ses_domain_identity.domain_identity.domain}"
-}
-
 resource "aws_route53_record" "mx_record" {
   zone_id = var.hosted_zone_id
-  name    = aws_ses_domain_mail_from.mail_from.mail_from_domain
+  name    = aws_ses_domain_identity.domain_identity.domain
   type    = "MX"
   ttl     = "600"
   records = ["10 feedback-smtp.${data.aws_region.current.name}.amazonses.com"]
-}
-
-resource "aws_route53_record" "spf_record" {
-  zone_id = var.hosted_zone_id
-  name    = aws_ses_domain_mail_from.mail_from.mail_from_domain
-  type    = "TXT"
-  ttl     = "600"
-  records = ["v=spf1 include:amazonses.com -all"]
 }
 
 resource "aws_ses_email_identity" "email_identity" {
