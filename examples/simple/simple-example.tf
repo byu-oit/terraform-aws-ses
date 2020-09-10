@@ -17,3 +17,7 @@ module "ses" {
 	# You might need to create one and activate it.
   rule_set_name  = "default-rule-set"
 }
+
+output "note" {
+	value = module.ses.note
+}
