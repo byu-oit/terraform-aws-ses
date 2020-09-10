@@ -53,12 +53,12 @@ resource "aws_route53_record" "mx_record" {
 }
 
 resource "aws_ses_email_identity" "email_identity" {
-  email      = local.mail_from_email_address
+  email = local.mail_from_email_address
   depends_on = [
-		aws_ses_receipt_rule.store,
-		aws_ses_domain_identity_verification.domain_verification,
-		aws_route53_record.mx_record
-	]
+    aws_ses_receipt_rule.store,
+    aws_ses_domain_identity_verification.domain_verification,
+    aws_route53_record.mx_record
+  ]
 }
 
 data "aws_iam_policy_document" "send_email" {

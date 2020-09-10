@@ -27,5 +27,5 @@ module "ses" {
 }
 
 output "note" {
-	value = module.ses.note
+  value = module.ses.note
 }
